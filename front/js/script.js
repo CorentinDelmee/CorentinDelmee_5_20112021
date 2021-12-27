@@ -1,40 +1,5 @@
 
-/*fetch("http://localhost:3000/api/products")
-    .then(function(res) {
-        if(res){
-            return res.json();
-        }
-    })
-    .then(function(value) {
-        return value;
-    })
-    .then((a) => {
-        const data = a;
-        console.log(data);
-    })
-    .catch(function(err) {
-
-});*/
-
-
 let data;
-
-            // Fonctions de création des cartes sur la page d'accueil
-
-function altTxtHTML(){
-    for (let specs of data){
-        console.log(specs.altTxt);
-
-        let newDiv = document.createElement("p");
-        let contenu = document.createTextNode(specs.altTxt);
-        let SectionItems = document.getElementById("items")
-        
-        newDiv.appendChild(contenu);
-        SectionItems.appendChild(newDiv);
-        
-    }
-};
-
 
             // Récupération des données de l'API
 
@@ -57,19 +22,54 @@ async function getData(){
     })
 };
 
-            // Fonction récupérant les fonctions de création des cartes 
-            
-function cardCreator(){
-    console.log(data);
-    altTxtHTML();/*
-    colorsHTML();
-    descriptionHTML();
-    imageUrlHTML();
-    nameHTML();
-    priceHTML();
-    idHTML();*/
-};
 
+            // Fonctions de création des cartes sur la page d'accueil
+
+function cardCreator(){
+    for (let specs of data){
+
+        let SectionItems = document.getElementById("items");
+
+            // Création d'un lien
+
+        let newLink = document.createElement("a");
+        newLink.href = "#";
+
+        SectionItems.appendChild(newLink);
+
+            // Création d'un article dans le lien
+
+        let newArticle = document.createElement("article");
+        
+        newLink.appendChild(newArticle);
+
+            // Création d'une image dans l'article
+
+        let newImg = document.createElement("img");
+        newImg.src = specs.imageUrl;
+
+        newArticle.appendChild(newImg);
+
+            // Création d'un titre dans l'article
+
+        let newH3 = document.createElement("h3");
+        newH3.classList.add("productName");
+        let contenuH3 = document.createTextNode(specs.name);
+        
+        newH3.appendChild(contenuH3);
+        newArticle.appendChild(newH3);
+
+            // Création d'un paragraphe dans l'article
+
+        let newParaf = document.createElement("p");
+        newParaf.classList.add("productDescription");
+        let contenuParaf = document.createTextNode(specs.description);
+
+        newParaf.appendChild(contenuParaf);
+        newArticle.appendChild(newParaf);
+
+    }
+};
 
 
 
