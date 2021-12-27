@@ -1,5 +1,6 @@
 
 let data;
+const productUrl = new URL("http://127.0.0.1:5500/front/html/product.html");
 
             // Récupération des données de l'API
 
@@ -33,7 +34,7 @@ function cardCreator(){
             // Création d'un lien
 
         let newLink = document.createElement("a");
-        newLink.href = "#";
+        newLink.href = productUrl + "?prod=" + specs._id;
 
         SectionItems.appendChild(newLink);
 
