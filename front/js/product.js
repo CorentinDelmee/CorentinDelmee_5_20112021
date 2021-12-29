@@ -7,7 +7,7 @@ let productId;
 
 function getProductId(){
     productId = new URLSearchParams(window.location.search).get("prod");
-    console.log(productId);
+    console.log("productId =" + productId);
 }
 
 
@@ -27,7 +27,7 @@ async function getProductData(){
     })
     .then((a) => {
         data = a;
-        console.log(data);
+        console.log("Specs du produit = " + data);
     })
     .catch(function(err) {
 
@@ -82,7 +82,52 @@ async function asynchroneFunction3(){
     getProductId();
     await getProductData();
     ProductCreator();
+    //addingStorage()
 }
 
 asynchroneFunction3();
+
+
+            // Fonction Ajout dans le panier
+
+const cartButton = document.getElementById("addToCart").addEventListener("click",function(){
+    
+    console.log("bouton cliqué")
+
+
+    let quantity = document.getElementById("quantity").value;
+    let color = document.getElementById("colors").value;
+
+
+    let specsProduct = {
+        id: data._id,
+        quantity: quantity,
+        color: color,
+    };
+
+    let cart = []
+    if (localStorage.cart) {
+    cart = JSON.parse(localStorage.cart);
+    console.log(typeof cart);
+    }
+
+    cart.push(specsProduct);
+   
+
+    localStorage.cart = JSON.stringify(cart);
+    console.log(localStorage.cart);
+
+/*
+    localStorage.id = data._id;
+    console.log(localStorage.id)
+
+    let quantity = document.getElementById("quantity").value;
+    console.log(quantity);
+    localStorage.quantity = quantity;
+
+    let color = document.getElementById("colors").value;
+    console.log(color);
+    localStorage.color = color;*/
+
+});
 

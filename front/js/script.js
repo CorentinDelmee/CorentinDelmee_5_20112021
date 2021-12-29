@@ -11,12 +11,9 @@ async function getData(){
             return res.json();
         }
     })
-    .then(function(value) {
-        return value;
-    })
-    .then((a) => {
-        data = a;
-        console.log(data);
+    .then((value) => {
+        data = value;
+        console.log(value);
     })
     .catch(function(err) {
 
