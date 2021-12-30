@@ -82,13 +82,13 @@ async function asynchroneFunction3(){
     getProductId();
     await getProductData();
     ProductCreator();
-    //addingStorage()
 }
 
 asynchroneFunction3();
 
 
             // Fonction Ajout dans le panier
+
 
 const cartButton = document.getElementById("addToCart").addEventListener("click",function(){
     
@@ -109,25 +109,32 @@ const cartButton = document.getElementById("addToCart").addEventListener("click"
     if (localStorage.cart) {
     cart = JSON.parse(localStorage.cart);
     console.log(typeof cart);
+    for(let i of cart){
+        if(i.id == specsProduct.id){
+            i.quantity ++
+        }
+    }   
     }
+    
 
-    cart.push(specsProduct);
-   
+    //cart.push(specsProduct);
+    console.log(cart);
+
+
+    /*for(let i of cart){
+        if(specsProduct.id == i.id){
+            i.quantity ++
+        }
+        else{
+            cart.push(specsProduct);
+        }
+    }*/
+
+    
 
     localStorage.cart = JSON.stringify(cart);
     console.log(localStorage.cart);
 
-/*
-    localStorage.id = data._id;
-    console.log(localStorage.id)
-
-    let quantity = document.getElementById("quantity").value;
-    console.log(quantity);
-    localStorage.quantity = quantity;
-
-    let color = document.getElementById("colors").value;
-    console.log(color);
-    localStorage.color = color;*/
 
 });
 
