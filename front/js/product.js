@@ -1,4 +1,4 @@
-            
+ 
 let productId;
 
 
@@ -109,16 +109,42 @@ const cartButton = document.getElementById("addToCart").addEventListener("click"
     if (localStorage.cart) {
     cart = JSON.parse(localStorage.cart);
     console.log(typeof cart);
-    for(let i of cart){
-        if(i.id == specsProduct.id){
-            i.quantity ++
-        }
-    }   
-    }
     
+    }
+
+    if (cart.some(e => e.id === specsProduct.id,) && cart.some(e => e.color === specsProduct.color,)) {
+
+        console.log("yes")
+        let objIndex = cart.findIndex((obj => obj.id == specsProduct.id && obj.color == specsProduct.color));
+
+
+        cart[objIndex].quantity = parseInt(cart[objIndex].quantity);
+        quantity = parseInt(quantity);
+        console.log(typeof cart[objIndex].quantity)
+        console.log(typeof quantity);
+        cart[objIndex].quantity = cart[objIndex].quantity += quantity;
+
+
+      }
+    else{
+        cart.push(specsProduct);
+    }
+
+    /*console.log(specsProduct.id)
+    cart.forEach(function (a) {
+        if (a.id == specsProduct.id) {
+            a.id[a.id] = { id: a.id, quantity: a.quantity ++,  color: a.color};
+        }
+        else{
+            cart.push(specsProduct);
+        }
+    });*/
+
+    console.log(cart);
 
     //cart.push(specsProduct);
-    console.log(cart);
+    
+    //console.log(cart);
 
 
     /*for(let i of cart){
@@ -133,7 +159,7 @@ const cartButton = document.getElementById("addToCart").addEventListener("click"
     
 
     localStorage.cart = JSON.stringify(cart);
-    console.log(localStorage.cart);
+    //console.log(localStorage.cart);
 
 
 });
