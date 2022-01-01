@@ -94,10 +94,12 @@ const cartButton = document.getElementById("addToCart").addEventListener("click"
     
     console.log("bouton cliqué")
 
+    let colorId = document.getElementById("colors");
+    let quantityId = document.getElementById("quantity");
 
-    let quantity = document.getElementById("quantity").value;
-    let color = document.getElementById("colors").value;
-
+    let quantity = parseInt(quantityId.value);
+    let color = colorId.value;
+    console.log(quantity);
 
     let specsProduct = {
         id: data._id,
@@ -109,57 +111,40 @@ const cartButton = document.getElementById("addToCart").addEventListener("click"
     if (localStorage.cart) {
     cart = JSON.parse(localStorage.cart);
     console.log(typeof cart);
-    
     }
 
-    if (cart.some(e => e.id === specsProduct.id,) && cart.some(e => e.color === specsProduct.color,)) {
+    if(quantity > 0 && color != ""){
 
-        console.log("yes")
-        let objIndex = cart.findIndex((obj => obj.id == specsProduct.id && obj.color == specsProduct.color));
+        if (cart.some(e => e.id === specsProduct.id,) && cart.some(e => e.color === specsProduct.color,)) {
 
+            quantityId.style.border = "none";
+            colorId.style.border = "none";
 
-        cart[objIndex].quantity = parseInt(cart[objIndex].quantity);
-        quantity = parseInt(quantity);
-        console.log(typeof cart[objIndex].quantity)
-        console.log(typeof quantity);
-        cart[objIndex].quantity = cart[objIndex].quantity += quantity;
+            console.log("yes")
+            let objIndex = cart.findIndex((obj => obj.id == specsProduct.id && obj.color == specsProduct.color));
 
+            console.log(typeof cart[objIndex].quantity)
+            console.log(typeof quantity);
+            cart[objIndex].quantity = cart[objIndex].quantity += quantity;
 
-      }
-    else{
-        cart.push(specsProduct);
-    }
-
-    /*console.log(specsProduct.id)
-    cart.forEach(function (a) {
-        if (a.id == specsProduct.id) {
-            a.id[a.id] = { id: a.id, quantity: a.quantity ++,  color: a.color};
         }
         else{
+            
+            quantityId.style.border = "none";
+            colorId.style.border = "none";
+            
             cart.push(specsProduct);
         }
-    });*/
+    }
+    if(quantity == 0){
+        quantityId.style.border = "2px solid red";
+    }
+    if(color == ""){
+        colorId.style.border = "2px solid red";
+    }
 
     console.log(cart);
-
-    //cart.push(specsProduct);
-    
-    //console.log(cart);
-
-
-    /*for(let i of cart){
-        if(specsProduct.id == i.id){
-            i.quantity ++
-        }
-        else{
-            cart.push(specsProduct);
-        }
-    }*/
-
-    
-
     localStorage.cart = JSON.stringify(cart);
-    //console.log(localStorage.cart);
 
 
 });
