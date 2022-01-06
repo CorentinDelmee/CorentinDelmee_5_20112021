@@ -97,7 +97,7 @@ const cartButton = document.getElementById("addToCart").addEventListener("click"
     let colorId = document.getElementById("colors");
     let quantityId = document.getElementById("quantity");
 
-    let quantity = parseInt(quantityId.value);
+    let quantity = parseInt(quantityId.value, 10);
     let color = colorId.value;
     console.log(quantity);
 
@@ -115,13 +115,13 @@ const cartButton = document.getElementById("addToCart").addEventListener("click"
 
     if(quantity > 0 && color != ""){
 
-        if (cart.some(e => e.id === specsProduct.id,) && cart.some(e => e.color === specsProduct.color,)) {
+        if (cart.some(e => e.id === specsProduct.id && e.color === specsProduct.color)){
 
             quantityId.style.border = "none";
             colorId.style.border = "none";
 
             console.log("yes")
-            let objIndex = cart.findIndex((obj => obj.id == specsProduct.id && obj.color == specsProduct.color));
+            let objIndex = cart.findIndex((obj => obj.id === specsProduct.id && obj.color === specsProduct.color));
 
             console.log(typeof cart[objIndex].quantity)
             console.log(typeof quantity);

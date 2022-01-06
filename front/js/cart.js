@@ -6,7 +6,11 @@ console.log(cart);
 
                 // Function affichage du panier
 
-function generalFunction(){
+let data;
+
+
+
+async function generalFunction(){
     for(let specs of cart){
         
 
@@ -39,6 +43,8 @@ function generalFunction(){
 
             let mainArticle = document.createElement("article");
             mainArticle.classList.add("cart__item");
+            mainArticle.setAttribute("data-id", specs.id);
+            mainArticle.setAttribute("data-color", specs.color);
 
             sectionItems.appendChild(mainArticle);
 
@@ -126,30 +132,152 @@ function generalFunction(){
             inputQuantity.max = "100"
             inputQuantity.value = specs.quantity;
 
-
             divSettingsQuantity.appendChild(inputQuantity);
+
+                // Input Quantity EventListener Change
+
+                inputQuantity.addEventListener("change", function(){
+                    parafQuantity.innerHTML = "Qté : " + inputQuantity.value;
+
+                    // Change value in cart array;
+
+                    let objIndex = cart.findIndex((obj => obj.id == specs.id && obj.color == specs.color));
+                    cart[objIndex].quantity = inputQuantity.value;
+                    localStorage.cart = JSON.stringify(cart);
+
+                })
 
                     // A REVOIR !
 
             // Div Settings Delete
+
+            let divDelete = document.createElement("div");
+            divDelete.classList.add("cart__item__content__settings__delete");
+            divDelete.id = data.name;
+
+            divContentSettings.appendChild(divDelete);
+
+            // Paraf Settings Delete
 
             let parafDelete = document.createElement("p");
             parafDelete.classList.add("deleteItem");
             let parafDeleteContent = document.createTextNode("Supprimer");
             
             parafDelete.appendChild(parafDeleteContent);
-            divContentSettings.appendChild(parafDelete);
+            divDelete.appendChild(parafDelete);
 
+            // Delete button EventListener
+
+            parafDelete.addEventListener("click", function(){
+                let el = document.querySelector(`[data-id="${specs.id}"]`)
+                while(el.firstChild){
+                    el.removeChild(el.lastChild);
+                }
+                el.remove();
+
+                // Cart Array Remove
+
+                let objIndex = cart.findIndex((obj => obj.id == specs.id && obj.color == specs.color));
+                console.log(objIndex);
+                cart.splice(objIndex, 1);
+                console.log(cart);
+                localStorage.cart = JSON.stringify(cart);
+            })
 
         }
+
 
         async function asynchroneFunction4(){
             await getProductData();
             cartCreator();
         }
         
+
         asynchroneFunction4();
+
+        
     }
 }
 
-generalFunction();
+generalFunction()
+    
+
+
+
+
+                        // COMMAND FORM
+
+
+let commandButton = document.getElementById("order");
+
+let contact = {
+    firstName : "",
+    lastName : "",
+    address : "",
+    city : "",
+    email : "",
+    product:[],
+}
+
+commandButton.addEventListener("click", function(){
+    
+        // firstName Input
+
+    let firstNameInput = document.getElementById("firstName")
+
+    if(/^[A-Za-zÀ-ÿ]+$/.test(firstNameInput.value)){
+        contact.firstName = firstNameInput.value;
+    }
+    else{
+        document.getElementById("firstNameErrorMsg").innerHTML = "Veuillez insérer votre prénom"
+    }
+
+        // lastName Input
+
+    let lastNameInput = document.getElementById("lastName")
+
+    if(/^[A-Za-zÀ-ÿ]+$/.test(lastNameInput.value)){
+        contact.lastName = lastNameInput.value;
+    }
+    else{
+        document.getElementById("lastNameErrorMsg").innerHTML = "Veuillez insérer votre nom"
+    }
+
+        // adress Input
+
+    let addressInput = document.getElementById("address")
+
+    if(/./.test(addressInput.value)){
+        contact.address = addressInput.value;
+    }
+    else{
+        document.getElementById("addressErrorMsg").innerHTML = "Veuillez insérer votre adresse"
+    }
+
+        // city Input
+
+    let cityInput = document.getElementById("city")
+
+    if(cityInput.value == ""){
+        document.getElementById("cityErrorMsg").innerHTML = "Veuillez insérer votre ville"
+    }
+    else{
+        contact.city = cityInput.value
+    }
+
+        // email Input
+
+    let emailInput = document.getElementById("email");
+
+    if(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(emailInput.value)){
+        contact.email = emailInput.value;
+        console.log(contact.email);
+    }
+    else{
+        document.getElementById("emailErrorMsg").innerHTML = "Veuillez renseigner votre email"
+    }
+
+        // Product-ID
+
+})
+
