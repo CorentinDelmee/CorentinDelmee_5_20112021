@@ -1,4 +1,5 @@
-                // Récupération des données localStorage
+               
+               // Récupération des données localStorage
 
 let cart = (JSON.parse(localStorage.getItem("cart")));
 console.log(cart);
@@ -210,23 +211,37 @@ generalFunction()
 
 let commandButton = document.getElementById("order");
 
-let contact = {
-    firstName : "",
-    lastName : "",
-    address : "",
-    city : "",
-    email : "",
-    product:[],
-}
-
-commandButton.addEventListener("click", function(){
+commandButton.addEventListener("click", function(event){
     
+    event.preventDefault();
+
+        // Package JSON requete POST
+
+    let contact = {
+        firstName : "",
+        lastName : "",
+        address : "",
+        city : "",
+        email : "",
+        //products:[],
+    }
+    let products = [];
+
+        // Valid Variable
+
+    let firsNameValid = false;
+    let lastNameValid = false;
+    let addressValid = false;
+    let cityValid = false;
+    let emailValid = false;
+    let cartValid = false;
+
         // firstName Input
 
     let firstNameInput = document.getElementById("firstName")
 
     if(/^[A-Za-zÀ-ÿ]+$/.test(firstNameInput.value)){
-        contact.firstName = firstNameInput.value;
+        firsNameValid = true;
     }
     else{
         document.getElementById("firstNameErrorMsg").innerHTML = "Veuillez insérer votre prénom"
@@ -237,7 +252,7 @@ commandButton.addEventListener("click", function(){
     let lastNameInput = document.getElementById("lastName")
 
     if(/^[A-Za-zÀ-ÿ]+$/.test(lastNameInput.value)){
-        contact.lastName = lastNameInput.value;
+        lastNameValid = true;
     }
     else{
         document.getElementById("lastNameErrorMsg").innerHTML = "Veuillez insérer votre nom"
@@ -247,22 +262,22 @@ commandButton.addEventListener("click", function(){
 
     let addressInput = document.getElementById("address")
 
-    if(/./.test(addressInput.value)){
-        contact.address = addressInput.value;
+    if(addressInput.value === ""){
+        document.getElementById("addressErrorMsg").innerHTML = "Veuillez insérer votre adresse"
     }
     else{
-        document.getElementById("addressErrorMsg").innerHTML = "Veuillez insérer votre adresse"
+        addressValid = true;
     }
 
         // city Input
 
     let cityInput = document.getElementById("city")
 
-    if(cityInput.value == ""){
+    if(cityInput.value === ""){
         document.getElementById("cityErrorMsg").innerHTML = "Veuillez insérer votre ville"
     }
     else{
-        contact.city = cityInput.value
+        cityValid = true;
     }
 
         // email Input
@@ -270,14 +285,54 @@ commandButton.addEventListener("click", function(){
     let emailInput = document.getElementById("email");
 
     if(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(emailInput.value)){
-        contact.email = emailInput.value;
         console.log(contact.email);
+        emailValid = true;
     }
     else{
         document.getElementById("emailErrorMsg").innerHTML = "Veuillez renseigner votre email"
     }
 
+        // Cart Valid
+
+    if(cart.length > 0){
+        cartValid = true;
+    }
+    else{
+        let cartErrorMsg = document.querySelector("div.cart__price > p");
+        cartErrorMsg.style.color = "red";
+        cartErrorMsg.innerHTML = "Vous n'avez aucun article dans votre panier";
+    }
+
+
+        // Validation requete POST
+
+    if(firsNameValid && lastNameValid && addressValid && cityValid && emailValid && cartValid){
+
+        contact.firstName = firstNameInput.value;
+        contact.lastName = lastNameInput.value;
+        contact.address = addressInput.value;
+        contact.city = cityInput.value;
+        contact.email = emailInput.value;
+
         // Product-ID
 
+        for(let product of cart){
+            products.push(product.id);
+        }
+        
+        console.log(JSON.stringify(contact));
+
+
+        fetch("http://localhost:3000/api/products/order", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({contact, products})
+        })
+        .then(res => res.json())
+        .then(res => document.location.href = "http://127.0.0.1:5500/front/html/confirmation.html" + "?confirm=" + res.orderId);
+    }
 })
 
