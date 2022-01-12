@@ -78,16 +78,16 @@ function ProductCreator(){
 
             // Fonction asynchrone générale
 
-async function asynchroneFunction3(){
+async function asynchroneFunction(){
     getProductId();
     await getProductData();
     ProductCreator();
 }
 
-asynchroneFunction3();
+asynchroneFunction();
 
 
-            // Fonction Ajout dans le panier
+            // Function add product in card
 
 
 const cartButton = document.getElementById("addToCart").addEventListener("click",function(){
@@ -113,6 +113,8 @@ const cartButton = document.getElementById("addToCart").addEventListener("click"
     console.log(typeof cart);
     }
 
+        //  Verification if already the same item in cart
+
     if(quantity > 0 && color != ""){
 
         if (cart.some(e => e.id === specsProduct.id && e.color === specsProduct.color)){
@@ -136,6 +138,9 @@ const cartButton = document.getElementById("addToCart").addEventListener("click"
             cart.push(specsProduct);
         }
     }
+
+        // Error Message
+
     if(quantity == 0){
         quantityId.style.border = "2px solid red";
     }
