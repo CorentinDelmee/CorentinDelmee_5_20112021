@@ -1,9 +1,14 @@
+
+let cart__price = document.querySelector("div.cart__price")
                
-               // Récupération des données localStorage
+                // Récupération des données localStorage
+
 
 let cart = (JSON.parse(localStorage.getItem("cart")));
 console.log(cart);
 
+
+if(cart__price){
 
                 // Function affichage du panier
 
@@ -218,32 +223,31 @@ commandButton.addEventListener("click", function(event){
 
     let products = [];
 
-        // Boolean Valid Variable
-
-    let firsNameValid = false;
-    let lastNameValid = false;
-    let addressValid = false;
-    let cityValid = false;
-    let emailValid = false;
-    let cartValid = false;
-
-        // InputVariable
-
-    let firstNameInput = document.getElementById("firstName")
-    let lastNameInput = document.getElementById("lastName")
-    let addressInput = document.getElementById("address")
-    let cityInput = document.getElementById("city")
-    let emailInput = document.getElementById("email");
-
-
         // Function Get Valid Form
 
     function getValidForm(){
 
+        // Boolean Valid Variable
+
+        let firstNameValid = false;
+        let lastNameValid = false;
+        let addressValid = false;
+        let cityValid = false;
+        let emailValid = false;
+        let cartValid = false;
+
+            // InputVariable
+
+        const firstNameInput = document.getElementById("firstName")
+        const lastNameInput = document.getElementById("lastName")
+        const addressInput = document.getElementById("address")
+        const cityInput = document.getElementById("city")
+        const emailInput = document.getElementById("email");
+
             // firstName Input
 
         if(/^[A-Za-zÀ-ÿ]+$/.test(firstNameInput.value)){
-            firsNameValid = true;
+            firstNameValid = true;
         }
         else{
             document.getElementById("firstNameErrorMsg").innerHTML = "Veuillez insérer votre prénom"
@@ -296,15 +300,19 @@ commandButton.addEventListener("click", function(event){
             cartErrorMsg.style.color = "red";
             cartErrorMsg.innerHTML = "Vous n'avez aucun article dans votre panier";
         }
+
+        validVariable(firstNameValid, lastNameValid, addressValid, cityValid, emailValid, cartValid, firstNameInput, lastNameInput, addressInput, cityInput, emailInput, contact, products);
     }
 
-    getValidForm()
+    getValidForm();
 
+})
+}
 
-    // Function validVariable / requete POST + push products array
+ // Function validVariable / requete POST + push products array
 
-
-    if(firsNameValid && lastNameValid && addressValid && cityValid && emailValid && cartValid){
+function validVariable(firstNameValid, lastNameValid, addressValid, cityValid, emailValid, cartValid, firstNameInput, lastNameInput, addressInput, cityInput, emailInput, contact, products){
+    if(firstNameValid && lastNameValid && addressValid && cityValid && emailValid && cartValid){
 
         contact.firstName = firstNameInput.value;
         contact.lastName = lastNameInput.value;
@@ -320,11 +328,13 @@ commandButton.addEventListener("click", function(event){
         
         console.log(JSON.stringify(contact));
 
+        postRequest(contact, products);
     }
+}
 
+// Function requête POST Form
 
-    // Function requête POST Form
-
+function postRequest(contact, products){
     fetch("http://localhost:3000/api/products/order", {
             method: 'POST',
             headers: {
@@ -332,11 +342,15 @@ commandButton.addEventListener("click", function(event){
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({contact, products})
-        })
-        .then(res => res.json())
-        .then(res => document.location.href = "http://127.0.0.1:5500/front/html/confirmation.html" + "?confirm=" + res.orderId);
-        
-    
-    }
-)
+    })
+    .then(res => res.json())
+    .then(res => document.location.href = "http://127.0.0.1:5500/front/html/confirmation.html" + "?confirm=" + res.orderId)
+    .catch(err => console.log(err));
+}
 
+
+
+const confirmationParaf = document.querySelector("div.confirmation > p");
+if(confirmationParaf){
+    confirmationParaf.textContent += new URLSearchParams(window.location.search).get("confirm");
+}
