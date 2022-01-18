@@ -121,7 +121,7 @@ const cartButton = document.getElementById("addToCart").addEventListener("click"
 
             console.log("yes")
             let objIndex = cart.findIndex((obj => obj.id === specsProduct.id && obj.color === specsProduct.color));
-
+            
             console.log(typeof cart[objIndex].quantity)
             console.log(typeof quantity);
             cart[objIndex].quantity = cart[objIndex].quantity += quantity;
