@@ -23,7 +23,7 @@ let data;
         async function getProductData(){
             return fetch("http://localhost:3000/api/products/" + specs.id)
             
-            .then(function(res) {
+            .then((res) => {
                 if(res){
                     return res.json();
                 }
@@ -41,7 +41,7 @@ let data;
         // Function création des cartes
 
         function cartCreator(){
-            let sectionItems = document.getElementById("cart__items");
+            const sectionItems = document.getElementById("cart__items");
 
             // Article 
 
@@ -189,13 +189,13 @@ let data;
         }
 
 
-        async function asynchroneFunction4(){
+        async function asynchroneFunction(){
             await getProductData();
             cartCreator();
         }
         
 
-        asynchroneFunction4();
+        asynchroneFunction();
 
         
     }
@@ -203,7 +203,7 @@ let data;
                         // COMMAND FORM
 
 
-let commandButton = document.getElementById("order");
+const commandButton = document.getElementById("order");
 
 commandButton.addEventListener("click", function(event){
     

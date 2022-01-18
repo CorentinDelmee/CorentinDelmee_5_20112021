@@ -17,17 +17,14 @@ function getProductId(){
 async function getProductData(){
     return fetch("http://localhost:3000/api/products/" + productId)
     
-    .then(function(res) {
+    .then((res) => {
         if(res){
             return res.json();
         }
     })
-    .then(function(value) {
-        return value;
-    })
-    .then((a) => {
-        data = a;
-        console.log("Specs du produit = " + data);
+    .then((value) => {
+        data = value;
+        console.log(value)
     })
     .catch(function(err) {
 

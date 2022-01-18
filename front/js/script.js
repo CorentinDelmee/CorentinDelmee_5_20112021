@@ -6,7 +6,7 @@ const productUrl = new URL("http://127.0.0.1:5500/front/html/product.html");
 
 async function getData(){
     return fetch("http://localhost:3000/api/products")
-    .then(function(res) {
+    .then((res) =>{
         if(res){
             return res.json();
         }
